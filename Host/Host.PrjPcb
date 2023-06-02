@@ -43,12 +43,47 @@ CrossRefPorts=3
 CrossRefCrossSheets=1
 CrossRefSheetEntries=0
 CrossRefFollowFromMainSettings=1
+CurrentVariant=Recommended Build
 
 [Preferences]
 PrefsVaultGUID=
 PrefsRevisionGUID=
 
 [Document1]
+DocumentPath=2layer_Sophistry_PCB.OutJob
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
+[Document2]
+DocumentPath=2layer_Sophistry_Assembly.OutJob
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
+[Document3]
 DocumentPath=Host.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -65,7 +100,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=VEFVIWIL
 
-[Document2]
+[Document4]
 DocumentPath=Host.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -81,6 +116,38 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=PVAMEXXR
+
+[ProjectVariant1]
+UniqueID=DC56ED8F-99E9-4D7B-BFFA-588F178F3BDA
+Description=Recommended Build
+AllowFabrication=0
+ParameterCount=0
+VariationCount=8
+Variation1=Designator=J6|UniqueId=\ESEUJCFS|Kind=1|AlternatePart= 
+Variation2=Designator=J7|UniqueId=\KAXRZKXX|Kind=1|AlternatePart= 
+Variation3=Designator=J2|UniqueId=\LXLHWKAI|Kind=0|AlternatePart= 
+Variation4=Designator=J3|UniqueId=\LSILZZQU|Kind=0|AlternatePart= 
+Variation5=Designator=J4|UniqueId=\OBVWOMOK|Kind=0|AlternatePart= 
+Variation6=Designator=J5|UniqueId=\QNOOXMJB|Kind=0|AlternatePart= 
+Variation7=Designator=R2|UniqueId=\IFCVBKUP|Kind=1|AlternatePart= 
+Variation8=Designator=R1|UniqueId=\IKBJZWSR|Kind=1|AlternatePart= 
+ParamVariationCount=0
+
+[Parameter1]
+Name=BOMRev
+Value=A
+
+[Parameter2]
+Name=Codename
+Value=LED_CUBE-Host
+
+[Parameter3]
+Name=HardRev
+Value=A
+
+[Parameter4]
+Name=LeadEngineer
+Value=JCF
 
 [Configuration1]
 Name=Sources
