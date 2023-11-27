@@ -32,6 +32,7 @@ ReportSuppressedErrorsInMessages=0
 FSMCodingStyle=eFMSDropDownList_OneProcess
 FSMEncodingStyle=eFMSDropDownList_OneHot
 IsProjectConflictPreventionWarningsEnabled=0
+ConstraintManagerFlow=0
 IsVirtualBomDocumentRemoved=0
 OutputPath=
 LogFolderPath=
@@ -129,8 +130,8 @@ Variation3=Designator=J2|UniqueId=\LXLHWKAI|Kind=0|AlternatePart=
 Variation4=Designator=J3|UniqueId=\LSILZZQU|Kind=0|AlternatePart= 
 Variation5=Designator=J4|UniqueId=\OBVWOMOK|Kind=0|AlternatePart= 
 Variation6=Designator=J5|UniqueId=\QNOOXMJB|Kind=0|AlternatePart= 
-Variation7=Designator=R2|UniqueId=\IFCVBKUP|Kind=1|AlternatePart= 
-Variation8=Designator=R1|UniqueId=\IKBJZWSR|Kind=1|AlternatePart= 
+Variation7=Designator=R2|UniqueId=\IFCVBKUP|Kind=0|AlternatePart= 
+Variation8=Designator=R1|UniqueId=\IKBJZWSR|Kind=0|AlternatePart= 
 ParamVariationCount=0
 
 [Parameter1]
