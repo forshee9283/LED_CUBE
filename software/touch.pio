@@ -1,0 +1,32 @@
+.program touch
+
+.wrap_target
+
+start:
+    set pindirs, 31
+    set pins, 31 
+    set pindirs, 0 [2]
+    in pins, 5 [7]
+    push noblock [7]
+    set pins, 0 [7]
+.wrap
+
+% c-sdk {
+// this is a raw helper function for use by the user which sets up the GPIO output, and configures the SM to output on a particular pin
+void touch_init(PIO pio,uint offset, uint pin, uint num_buttons, float pio_clk_div){
+int i;
+for(i=0; i< num_buttons; i++) {
+    pio_gpio_init(pio, pin + i);
+    gpio_pull_down(pin + i);
+    //gpio_set_drive_stregnth(pin + i, 4);
+    //gpio_set_slew_rate(pin + i, 0);//what rate do we need and what settings can this be?
+    }
+
+pio_sm_config c = touch_program_get_default_config(offset);
+sm_config_set_clkdiv(&c, pio_clk_div); //Tune speed for sensitivity
+sm_config_set_set_pins(&c, pin, num_buttons);
+sm_config_set_in_pins(&c, pin);
+sm_config_set_in_shift(&c, false, false, 32);
+pio_sm_init(pio1, 0, offset, &c);//This shoulden't be hardcoded! Check me!
+}
+%}
