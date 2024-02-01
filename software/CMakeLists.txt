@@ -7,7 +7,7 @@ include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 include($ENV{PICO_SDK_PATH}/tools/CMakeLists.txt)
  
 # Set the name and version of the project
-project(Nightlight C CXX ASM)
+project(LED_CUBE C CXX ASM)
 
 # Link the Project to a source file (step 4.6)
 add_executable(${PROJECT_NAME} source.c)
