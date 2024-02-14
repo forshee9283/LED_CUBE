@@ -1,0 +1,36 @@
+.program prox
+.wrap_target
+start:
+    pull noblock            ;Use osr as a counter fill with dummy data
+    set pindirs, 31         ;Configure all pins as outputs
+    set pins, 31            ;Set all pins high
+    set pindirs, 0 [31]         ;Configure all pins as inputs then no op for two cycles
+    mov x, x [31]           ;Number of no-ops will need to be tuned to hardware
+    mov x, x [31]
+    mov x, x [31]
+    mov x, x [31]
+    mov x, x [20]
+sample_loop:
+    in pins, 1
+    out null, 1             ;Tick down osr counter
+    jmp !osre, sample_loop
+    push noblock
+.wrap
+
+% c-sdk {
+// this is a raw helper function for use by the user which sets up the GPIO output, and configures the SM to output on a particular pin
+void prox_init(PIO pio, uint sm, uint offset, uint pin, float pio_clk_div){
+
+pio_gpio_init(pio, pin);
+gpio_pull_down(pin);
+//gpio_set_drive_stregnth(pin, 4);
+//gpio_set_slew_rate(pin);//what rate do we need and what settings can this be?
+
+pio_sm_config c = prox_program_get_default_config(offset);
+sm_config_set_clkdiv(&c, pio_clk_div); //Tune speed for sensitivity
+sm_config_set_set_pins(&c, pin, 1);
+sm_config_set_in_pins(&c, pin);
+sm_config_set_in_shift(&c, true, false, 32);
+pio_sm_init(pio, sm, offset, &c);
+}
+%}
