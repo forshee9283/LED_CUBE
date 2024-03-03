@@ -9,13 +9,45 @@
 #include "hardware/dma.h"
 #include "hardware/irq.h"
 #include "ws2812.pio.h"
-#include "touch.pio.h"
+#include "prox.pio.h"
 
 #define FRAC_BITS 4
 #define NUM_PIXELS 19
 //#define NUM_PIXELS_STRIP0 19
 #define BRIGHTNESS 0xffff
 #define WS2812_PIN_BASE 2
+
+#define PROX_TOP_PIO pio1 //PIO block for proximity sensor //CHECK FOR HARDCODED PIO AND SM VALUES!
+#define PROX_TOP_SM 0 //state machine number for proximity sensor
+#define PROX_TOP_PIN 7 //GPIO number for the proximity sensor
+#define WS2812_PIO pio0
+#define WS2812_SM 0
+#define TIMER_IRQ 0
+#define TIMER_FULL 100 //Currently 1/10th of a second
+
+volatile int prox_top = 0;
+volatile int timer_count = 0;
+
+int prox_setup(PIO pio_prox, int start_pin, int sm, const float clk_div){
+    uint offset_prox = pio_add_program(pio_prox, &prox_program);
+    pio_sm_claim(pio_prox, sm);//Panic if unavailible
+    prox_init(pio_prox, sm, offset_prox, start_pin, clk_div);
+    pio_sm_set_enabled(pio_prox, sm, true);
+}
+
+bool timer_callback (struct repeating_timer *t) {
+    printf("touch_state: %8u \n", (prox_top));
+    if(prox_top>0){
+        timer_count=TIMER_FULL;
+    }
+    else if (timer_count != 0)
+    {
+        timer_count--;
+    }
+    printf("timer_count: %8u \n", (timer_count));
+    prox_top = 0;
+    return true;
+}
 
 // horrible temporary hack to avoid changing pattern code
 static uint8_t *current_strip_out;
@@ -330,19 +362,23 @@ int main() {
     puts("WS2812 parallel");
 
     // todo get free sm
-    PIO pio = pio0;
-    int sm = 0;
-    uint offset = pio_add_program(pio, &ws2812_parallel_program);
-    ws2812_parallel_program_init(pio, sm, offset, WS2812_PIN_BASE, count_of(strips), 800000);
+    //PIO pio = pio0;
+    //int sm = 0;
+    uint offset = pio_add_program(WS2812_PIO, &ws2812_parallel_program);
+    ws2812_parallel_program_init(WS2812_PIO, WS2812_SM, offset, WS2812_PIN_BASE, count_of(strips), 800000);
 
     sem_init(&reset_delay_complete_sem, 1, 1); // initially posted so we don't block first time
-    dma_init(pio, sm);
+    dma_init(WS2812_PIO, WS2812_SM);
 
-    int offset_b = pio_add_program(pio1, &touch_program);
-    touch_init(pio1, offset_b, 6, 1, pio_clk_div);
-    pio_sm_set_enabled(pio1, 0, true); //Enable first state machine of pio10
+    prox_setup(PROX_TOP_PIO, PROX_TOP_PIN, PROX_TOP_SM, 1);
+    // Initialize hardware timer
+    struct repeating_timer timer;
 
-    uint button =0;
+    // Initialize the timer with the given period and enable interrupts
+    add_repeating_timer_ms(-100, timer_callback, NULL, &timer);
+
+    int prox_temp =0;
+
 
     int brightness = 0;
     uint current = 0;
@@ -351,7 +387,12 @@ int main() {
 
     int t = 0;
     while (1) {
-        if (button == 0){
+        prox_temp =pio_sm_get(PROX_TOP_PIO,PROX_TOP_SM);
+            if (prox_temp>prox_top){
+                prox_top = prox_temp;
+            }
+
+        if (1){
             pat = rand() % count_of(pattern_table);
             dir = (rand() >> 30) & 1 ? 1 : -1;
             if (rand() & 1) dir = 0;
@@ -360,28 +401,25 @@ int main() {
             brightness = 0;
             current = 0;
         }
-        for (int i = 0; i < 100; ++i) {
-            current_strip_out = strip0.data;
-            current_strip_4color = false;
-            pattern_table[pat].pat(NUM_PIXELS, t);
-            current_strip_out = strip1.data;
-            current_strip_4color = false;
-            pattern_table[pat].pat(NUM_PIXELS, t);
+        if(timer_count>0){
+            for (int i = 0; i < 100; ++i) {
+                current_strip_out = strip0.data;
+                current_strip_4color = false;
+                pattern_table[pat].pat(NUM_PIXELS, t);
+                current_strip_out = strip1.data;
+                current_strip_4color = false;
+                pattern_table[pat].pat(NUM_PIXELS, t);
                 
-
-            transform_strips(strips, count_of(strips), colors, NUM_PIXELS * 4, brightness);
-            dither_values(colors, states[current], states[current ^ 1], NUM_PIXELS * 4);
-            sem_acquire_blocking(&reset_delay_complete_sem);
-            output_strips_dma(states[current], NUM_PIXELS * 4);
-            current ^= 1;
-            t += dir;
-            brightness++;
-            if (brightness == (0x20 << FRAC_BITS)) brightness = 0;
+                transform_strips(strips, count_of(strips), colors, NUM_PIXELS * 4, brightness);
+                dither_values(colors, states[current], states[current ^ 1], NUM_PIXELS * 4);
+                sem_acquire_blocking(&reset_delay_complete_sem);
+                output_strips_dma(states[current], NUM_PIXELS * 4);
+                current ^= 1;
+                t += dir;
+                brightness++;
+                if (brightness == (0x20 << FRAC_BITS)) brightness = 0;
+        }
         }
         memset(&states, 0, sizeof(states)); // clear out errors
-
-        button = pio1->rxf[0]&1;
-        printf("button state %u\n", button);
-
     }
 }
