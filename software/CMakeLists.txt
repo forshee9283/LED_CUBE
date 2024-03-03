@@ -12,13 +12,9 @@ project(LED_CUBE C CXX ASM)
 # Link the Project to a source file (step 4.6)
 add_executable(${PROJECT_NAME} source.c)
 
-
 # Create C header file with the name <pio program>.pio.h
-pico_generate_pio_header(${PROJECT_NAME}  
-    ${CMAKE_CURRENT_LIST_DIR}/prox.pio
-    ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio
-
-)
+pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/prox.pio)
+pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
  
 # Link to pico_stdlib (gpio, time, etc. functions) and other libraries required by the executable
 target_link_libraries(${PROJECT_NAME} 
