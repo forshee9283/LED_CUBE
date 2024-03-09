@@ -17,15 +17,26 @@
 #define BRIGHTNESS 0xffff
 #define WS2812_PIN_BASE 2
 
-#define PROX_TOP_PIO pio1 //PIO block for proximity sensor //CHECK FOR HARDCODED PIO AND SM VALUES!
+#define PROX_PIO pio1 //PIO block for proximity sensor //CHECK FOR HARDCODED PIO AND SM VALUES!
 #define PROX_TOP_SM 0 //state machine number for proximity sensor
 #define PROX_TOP_PIN 7 //GPIO number for the proximity sensor
+#define PROX_TOP_TUNE 2.9
+#define PROX_RIGHT_SM 1 //state machine number for proximity sensor
+#define PROX_RIGHT_PIN 8 //GPIO number for the proximity sensor
+#define PROX_RIGHT_TUNE 2.3
+#define PROX_LEFT_SM 2 //state machine number for proximity sensor
+#define PROX_LEFT_PIN 19 //GPIO number for the proximity sensor
+#define PROX_LEFT_TUNE 2.5
 #define WS2812_PIO pio0
 #define WS2812_SM 0
 #define TIMER_IRQ 0
-#define TIMER_FULL 100 //Currently 1/10th of a second
+#define TIMER_FULL 600 //Length of on time 12000 for 20 min
 
 volatile int prox_top = 0;
+volatile int prox_right = 0;
+volatile int prox_right_count = 0;
+volatile bool prox_right_flag = 0;
+volatile int prox_left = 0;
 volatile int timer_count = 0;
 
 int prox_setup(PIO pio_prox, int start_pin, int sm, const float clk_div){
@@ -36,16 +47,25 @@ int prox_setup(PIO pio_prox, int start_pin, int sm, const float clk_div){
 }
 
 bool timer_callback (struct repeating_timer *t) {
-    printf("touch_state: %8u \n", (prox_top));
-    if(prox_top>0){
+    printf("top: %6u right: %6u left: %6u timer: %6u \n", prox_top, prox_right, prox_left, timer_count);
+    if(prox_top>3){
         timer_count=TIMER_FULL;
     }
     else if (timer_count != 0)
     {
         timer_count--;
     }
-    printf("timer_count: %8u \n", (timer_count));
+    if (prox_right_count!=0)
+    {
+        prox_right_count--;
+    }
+    if((prox_right>3)&&(prox_right_count==0)&&(timer_count!=0)){ //Also need to clear prox_right_count on single tap
+        prox_right_count = 15;
+        prox_right_flag = 1;
+    }
     prox_top = 0;
+    prox_right = 0;
+    prox_left = 0;
     return true;
 }
 
@@ -116,8 +136,9 @@ void pattern_greys(uint len, uint t) {
 
 void pattern_solid(uint len, uint t) {
     t = 1;
+    int rand_color = rand() & 0xFFFFFF;
     for (int i = 0; i < len; ++i) {
-        put_pixel(t * 0xFFFF00);
+        put_pixel(t * rand_color);
     }
 }
 
@@ -169,14 +190,14 @@ const struct {
     pattern pat;
     const char *name;
 } pattern_table[] = {
-        {pattern_snakes,  "Snakes!"},
-        {pattern_random,  "Random data"},
-        {pattern_sparkle, "Sparkles"},
-        {pattern_greys,   "Greys"},
-        {pattern_solid,  "Solid!"},
         {pattern_red,  "red!"},
         {pattern_green,  "green"},
         {pattern_blue,  "blue"},
+        //{pattern_snakes,  "Snakes!"},
+        //{pattern_random,  "Random data"},
+        //{pattern_sparkle, "Sparkles"},
+        //{pattern_greys,   "Greys"},
+        //{pattern_solid,  "Solid!"},
         {pattern_fade, "Fade"},
         {pattern_rand_solid, "Random Solid"},
 };
@@ -358,51 +379,60 @@ void output_strips_dma(value_bits_t *bits, uint value_length) {
 int main() {
     //set_sys_clock_48();
     stdio_init_all();
-    static const float pio_clk_div = 50;
-    puts("WS2812 parallel");
 
-    // todo get free sm
-    //PIO pio = pio0;
-    //int sm = 0;
     uint offset = pio_add_program(WS2812_PIO, &ws2812_parallel_program);
     ws2812_parallel_program_init(WS2812_PIO, WS2812_SM, offset, WS2812_PIN_BASE, count_of(strips), 800000);
 
     sem_init(&reset_delay_complete_sem, 1, 1); // initially posted so we don't block first time
     dma_init(WS2812_PIO, WS2812_SM);
 
-    prox_setup(PROX_TOP_PIO, PROX_TOP_PIN, PROX_TOP_SM, 1);
+    prox_setup(PROX_PIO, PROX_TOP_PIN, PROX_TOP_SM, PROX_TOP_TUNE);
+    prox_setup(PROX_PIO, PROX_RIGHT_PIN, PROX_RIGHT_SM, PROX_RIGHT_TUNE);
+    prox_setup(PROX_PIO, PROX_LEFT_PIN, PROX_LEFT_SM, PROX_LEFT_TUNE);
     // Initialize hardware timer
     struct repeating_timer timer;
 
     // Initialize the timer with the given period and enable interrupts
     add_repeating_timer_ms(-100, timer_callback, NULL, &timer);
 
-    int prox_temp =0;
+    int prox_temp_top =0;
+    int prox_temp_right =0;
+    int prox_temp_left =0;
 
-
-    int brightness = 0;
+    int brightness = 256;//0;
     uint current = 0;
-    int pat = rand() % count_of(pattern_table);
-    int dir = (rand() >> 30) & 1 ? 1 : -1;
+    int pat = 0;
+    int dir = 0;//(rand() >> 30) & 1 ? 1 : -1;
 
     int t = 0;
     while (1) {
-        prox_temp =pio_sm_get(PROX_TOP_PIO,PROX_TOP_SM);
-            if (prox_temp>prox_top){
-                prox_top = prox_temp;
+        prox_temp_top =pio_sm_get(PROX_PIO,PROX_TOP_SM);
+            if (prox_temp_top>prox_top){
+                prox_top = prox_temp_top;
+            }
+        prox_temp_right =pio_sm_get(PROX_PIO,PROX_RIGHT_SM);
+            if (prox_temp_right>prox_right){
+                prox_right = prox_temp_right;
+            }
+        prox_temp_left =pio_sm_get(PROX_PIO,PROX_LEFT_SM);
+            if (prox_temp_left>prox_left){
+                prox_left = prox_temp_left;
             }
 
-        if (1){
-            pat = rand() % count_of(pattern_table);
-            dir = (rand() >> 30) & 1 ? 1 : -1;
-            if (rand() & 1) dir = 0;
+        if (prox_right_flag){
+            prox_right_flag = 0;
+            pat = (pat + 1) % count_of(pattern_table);
+            //dir = (rand() >> 30) & 1 ? 1 : -1;
+            //if (rand() & 1) dir = 0;
+            dir = 0;
             puts(pattern_table[pat].name);
-            puts(dir == 1 ? "(forward)" : dir ? "(backward)" : "(still)");
-            brightness = 0;
+            //puts(dir == 1 ? "(forward)" : dir ? "(backward)" : "(still)");
+            //brightness = 0;
             current = 0;
         }
         if(timer_count>0){
-            for (int i = 0; i < 100; ++i) {
+            brightness =  timer_count>1 ? 256 : 0;//Last time 0 brightness to fix stuck pixles
+            for (int i = 0; i < 2; ++i) {
                 current_strip_out = strip0.data;
                 current_strip_4color = false;
                 pattern_table[pat].pat(NUM_PIXELS, t);
@@ -416,8 +446,8 @@ int main() {
                 output_strips_dma(states[current], NUM_PIXELS * 4);
                 current ^= 1;
                 t += dir;
-                brightness++;
-                if (brightness == (0x20 << FRAC_BITS)) brightness = 0;
+                // brightness++;
+                // if (brightness == (0x20 << FRAC_BITS)) brightness = 0;
         }
         }
         memset(&states, 0, sizeof(states)); // clear out errors

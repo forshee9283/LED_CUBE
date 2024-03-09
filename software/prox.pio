@@ -6,10 +6,10 @@ start:
     set pins, 31            ;Set all pins high
     set pindirs, 0 [31]         ;Configure all pins as inputs then no op for two cycles
     mov x, x [31]           ;Number of no-ops will need to be tuned to hardware
-    mov x, x [31]
-    mov x, x [31]
-    mov x, x [31]
-    mov x, x [24]
+    ;mov x, x [31]
+    ;mov x, x [31]
+    ;mov x, x [15]
+    ;mov x, x [0]
 sample_loop:
     in pins, 1
     out null, 1             ;Tick down osr counter
