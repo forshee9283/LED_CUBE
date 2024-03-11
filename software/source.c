@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "pico/stdlib.h"
 #include "pico/sem.h"
@@ -30,7 +31,9 @@
 #define WS2812_PIO pio0
 #define WS2812_SM 0
 #define TIMER_IRQ 0
-#define TIMER_FULL 600 //Length of on time 12000 for 20 min
+#define TIMER_FULL 12000 //15mS per
+#define RAINBOW_STEPS 1024
+# define M_PI 3.14159265358979323846  /* pi */
 
 volatile int prox_top = 0;
 volatile int prox_right = 0;
@@ -38,6 +41,7 @@ volatile int prox_right_count = 0;
 volatile bool prox_right_flag = 0;
 volatile int prox_left = 0;
 volatile int timer_count = 0;
+volatile int run_count = 0;
 
 int prox_setup(PIO pio_prox, int start_pin, int sm, const float clk_div){
     uint offset_prox = pio_add_program(pio_prox, &prox_program);
@@ -47,9 +51,14 @@ int prox_setup(PIO pio_prox, int start_pin, int sm, const float clk_div){
 }
 
 bool timer_callback (struct repeating_timer *t) {
-    printf("top: %6u right: %6u left: %6u timer: %6u \n", prox_top, prox_right, prox_left, timer_count);
+    //printf("top: %6u right: %6u left: %6u timer: %6u \n", prox_top, prox_right, prox_left, timer_count);
+    if((prox_left>7)&&(timer_count!=0)){
+        timer_count=16;
+        printf("top: %4u right: %4u left: %4u timer: %4u Left Triggered! \n", prox_top, prox_right, prox_left, timer_count);
+    }
     if(prox_top>3){
         timer_count=TIMER_FULL;
+        printf("top: %4u right: %4u left: %4u timer: %4u Top Triggered! \n", prox_top, prox_right, prox_left, timer_count);
     }
     else if (timer_count != 0)
     {
@@ -59,14 +68,53 @@ bool timer_callback (struct repeating_timer *t) {
     {
         prox_right_count--;
     }
-    if((prox_right>3)&&(prox_right_count==0)&&(timer_count!=0)){ //Also need to clear prox_right_count on single tap
+    if((prox_right>3)&&(prox_right_count==0)&&(timer_count!=0)){ //Press and hold to scroll tap to advance
         prox_right_count = 15;
         prox_right_flag = 1;
+        printf("top: %4u right: %4u left: %4u timer: %4u Right Triggered! \n", prox_top, prox_right, prox_left, timer_count);
     }
+    if (prox_right<=3)//clear so tap works
+    {
+        prox_right_count = 0;
+    }
+    run_count++;
     prox_top = 0;
     prox_right = 0;
     prox_left = 0;
     return true;
+}
+unsigned int rainbowTable[RAINBOW_STEPS];
+
+unsigned int rainbowFade(int step, int count) {
+    // Calculate phase shift for red, green, and blue
+    double phaseShift = (step % count) * (2.0 * M_PI / count);
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+
+    if (phaseShift<(2*M_PI/3))
+    {
+        red = (unsigned char)(sin(phaseShift*(3.0/2.0) + M_PI/2.0) * 127 + 128);
+        green =  (unsigned char)(sin(phaseShift*(3.0/2.0) - M_PI/2.0) * 127 + 128);
+        blue = 0;
+    }
+    else if (phaseShift<(4*M_PI/3))
+    {
+        red = 0;
+        green = (unsigned char)(sin(phaseShift*(3.0/2.0) - M_PI/2.0) * 127 + 128);
+        blue = (unsigned char)(sin(phaseShift*(3.0/2.0) + M_PI/2.0) * 127 + 128);
+    }
+    else
+    {
+        red = (unsigned char)(sin(phaseShift*(3.0/2.0) + M_PI*1.5) * 127 + 128);
+        green = 0;
+        blue = (unsigned char)(sin(phaseShift*(3.0/2.0) + M_PI/2.0) * 127 + 128);
+    }
+    // Construct the 24-bit color value
+    unsigned int color = (blue << 16) | (red << 8) | green;
+
+
+    return color;
 }
 
 // horrible temporary hack to avoid changing pattern code
@@ -123,6 +171,34 @@ void pattern_rand_solid(uint len, uint t) {
     int rand_color = rand() % 16;
     for (int i = 0; i < len; ++i)
         put_pixel(rand_color ? 0 : 0xffffffff);
+}
+
+void pattern_rainbow_fade(uint len, uint t) {
+    for (int i = 0; i < len; ++i)
+        put_pixel(rainbowTable[run_count % RAINBOW_STEPS]);
+}
+
+void pattern_rainbow_falls(uint len, uint t) { 
+    int count = run_count*4;
+    put_pixel(rainbowTable[(count -32) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[count % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[count % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[count % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 32) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 32) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 32) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 64) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 64) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 64) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 128) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
 }
 
 void pattern_greys(uint len, uint t) {
@@ -198,8 +274,10 @@ const struct {
         //{pattern_sparkle, "Sparkles"},
         //{pattern_greys,   "Greys"},
         //{pattern_solid,  "Solid!"},
-        {pattern_fade, "Fade"},
-        {pattern_rand_solid, "Random Solid"},
+        //{pattern_fade, "Fade"},
+        {pattern_rainbow_fade, "Rainbow!"},
+        {pattern_rainbow_falls, "Rainbow Falls!"}
+        //{pattern_rand_solid, "Random Solid"},
 };
 
 #define VALUE_PLANE_COUNT (8 + FRAC_BITS)
@@ -389,11 +467,18 @@ int main() {
     prox_setup(PROX_PIO, PROX_TOP_PIN, PROX_TOP_SM, PROX_TOP_TUNE);
     prox_setup(PROX_PIO, PROX_RIGHT_PIN, PROX_RIGHT_SM, PROX_RIGHT_TUNE);
     prox_setup(PROX_PIO, PROX_LEFT_PIN, PROX_LEFT_SM, PROX_LEFT_TUNE);
+    //Generate Rainbow Table
+    for (uint i = 0; i < RAINBOW_STEPS; i++) //This can be pregenerated but this shows the math
+    {
+        rainbowTable[i]=rainbowFade(i, RAINBOW_STEPS);
+    }
+    
+    
     // Initialize hardware timer
     struct repeating_timer timer;
 
     // Initialize the timer with the given period and enable interrupts
-    add_repeating_timer_ms(-100, timer_callback, NULL, &timer);
+    add_repeating_timer_ms(-20, timer_callback, NULL, &timer); //50 fps 
 
     int prox_temp_top =0;
     int prox_temp_right =0;
@@ -431,7 +516,7 @@ int main() {
             current = 0;
         }
         if(timer_count>0){
-            brightness =  timer_count>1 ? 256 : 0;//Last time 0 brightness to fix stuck pixles
+            brightness =  timer_count>16 ? 16 : timer_count-1;//fade to 0 brightness to fix stuck pixles
             for (int i = 0; i < 2; ++i) {
                 current_strip_out = strip0.data;
                 current_strip_4color = false;
