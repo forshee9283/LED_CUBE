@@ -24,14 +24,14 @@
 #define PROX_TOP_TUNE 2.9
 #define PROX_RIGHT_SM 1 //state machine number for proximity sensor
 #define PROX_RIGHT_PIN 8 //GPIO number for the proximity sensor
-#define PROX_RIGHT_TUNE 2.3
+#define PROX_RIGHT_TUNE 2.5
 #define PROX_LEFT_SM 2 //state machine number for proximity sensor
 #define PROX_LEFT_PIN 19 //GPIO number for the proximity sensor
 #define PROX_LEFT_TUNE 2.5
 #define WS2812_PIO pio0
 #define WS2812_SM 0
 #define TIMER_IRQ 0
-#define TIMER_FULL 12000 //15mS per
+#define TIMER_FULL 60000 //20mS per
 #define RAINBOW_STEPS 1024
 # define M_PI 3.14159265358979323846  /* pi */
 
@@ -69,13 +69,13 @@ bool timer_callback (struct repeating_timer *t) {
         prox_right_count--;
     }
     if((prox_right>3)&&(prox_right_count==0)&&(timer_count!=0)){ //Press and hold to scroll tap to advance
-        prox_right_count = 15;
+        prox_right_count = 40;
         prox_right_flag = 1;
         printf("top: %4u right: %4u left: %4u timer: %4u Right Triggered! \n", prox_top, prox_right, prox_left, timer_count);
     }
     if (prox_right<=3)//clear so tap works
     {
-        prox_right_count = 0;
+        prox_right_count = 5; //Crappy debounce
     }
     run_count++;
     prox_top = 0;
@@ -84,6 +84,7 @@ bool timer_callback (struct repeating_timer *t) {
     return true;
 }
 unsigned int rainbowTable[RAINBOW_STEPS];
+int sparkleTable[NUM_PIXELS*2];
 
 unsigned int rainbowFade(int step, int count) {
     // Calculate phase shift for red, green, and blue
@@ -180,7 +181,7 @@ void pattern_rainbow_fade(uint len, uint t) {
 
 void pattern_rainbow_falls(uint len, uint t) { 
     int count = run_count*4;
-    put_pixel(rainbowTable[(count -32) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count -64) % RAINBOW_STEPS]);
     put_pixel(rainbowTable[count % RAINBOW_STEPS]);
     put_pixel(rainbowTable[count % RAINBOW_STEPS]);
     put_pixel(rainbowTable[count % RAINBOW_STEPS]);
@@ -199,6 +200,11 @@ void pattern_rainbow_falls(uint len, uint t) {
     put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
     put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
     put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+}
+
+void pattern_rainbow_sparkle(uint len, uint t) {
+    for (int i = 0; i < len; ++i)
+        put_pixel(rainbowTable[((run_count*sparkleTable[2*i])+sparkleTable[2*i+1]) % RAINBOW_STEPS]);
 }
 
 void pattern_greys(uint len, uint t) {
@@ -276,7 +282,8 @@ const struct {
         //{pattern_solid,  "Solid!"},
         //{pattern_fade, "Fade"},
         {pattern_rainbow_fade, "Rainbow!"},
-        {pattern_rainbow_falls, "Rainbow Falls!"}
+        {pattern_rainbow_falls, "Rainbow Falls!"},
+        {pattern_rainbow_sparkle, "Sparkel Sparkel!"},
         //{pattern_rand_solid, "Random Solid"},
 };
 
@@ -472,7 +479,12 @@ int main() {
     {
         rainbowTable[i]=rainbowFade(i, RAINBOW_STEPS);
     }
-    
+
+    for (uint i = 0; i < (NUM_PIXELS*2); i++) //This can be pregenerated but this shows the math
+    {
+        sparkleTable[i*2]=(rand() % 14);//generate speed
+        sparkleTable[i*2+1]=(rand() % RAINBOW_STEPS);// generate phase
+    }
     
     // Initialize hardware timer
     struct repeating_timer timer;
