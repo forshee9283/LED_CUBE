@@ -31,7 +31,7 @@
 #define WS2812_PIO pio0
 #define WS2812_SM 0
 #define TIMER_IRQ 0
-#define TIMER_FULL 60000 //20mS per
+#define TIMER_FULL 120000 //20mS per
 #define RAINBOW_STEPS 1024
 # define M_PI 3.14159265358979323846  /* pi */
 
@@ -181,25 +181,25 @@ void pattern_rainbow_fade(uint len, uint t) {
 
 void pattern_rainbow_falls(uint len, uint t) { 
     int count = run_count*4;
-    put_pixel(rainbowTable[(count -64) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count -128) % RAINBOW_STEPS]);
     put_pixel(rainbowTable[count % RAINBOW_STEPS]);
     put_pixel(rainbowTable[count % RAINBOW_STEPS]);
     put_pixel(rainbowTable[count % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 32) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 32) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 32) % RAINBOW_STEPS]);
     put_pixel(rainbowTable[(count + 64) % RAINBOW_STEPS]);
     put_pixel(rainbowTable[(count + 64) % RAINBOW_STEPS]);
     put_pixel(rainbowTable[(count + 64) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
     put_pixel(rainbowTable[(count + 128) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
-    put_pixel(rainbowTable[(count + 96) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 128) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 128) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 192) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 192) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 192) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 192) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 256) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 192) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 192) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 192) % RAINBOW_STEPS]);
+    put_pixel(rainbowTable[(count + 192) % RAINBOW_STEPS]);
 }
 
 void pattern_rainbow_sparkle(uint len, uint t) {
@@ -483,6 +483,10 @@ int main() {
     for (uint i = 0; i < (NUM_PIXELS*2); i++) //This can be pregenerated but this shows the math
     {
         sparkleTable[i*2]=(rand() % 14);//generate speed
+        if (sparkleTable[i*2]==0) //Make sure there are no stuck pixles
+        {
+            sparkleTable[i*2]=3;
+        }
         sparkleTable[i*2+1]=(rand() % RAINBOW_STEPS);// generate phase
     }
     
