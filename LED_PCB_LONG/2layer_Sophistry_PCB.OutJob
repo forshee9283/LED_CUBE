@@ -15,19 +15,19 @@ LifeCycleDefinitionGUID=
 RevisionNamingSchemeGUID=
 
 [OutputGroup1]
-Name=2layer_Sophistry_Assembly.OutJob
+Name=
 Description=
-TargetOutputMedium=BOM
+TargetOutputMedium=Validation
 VariantName=[No Variations]
 VariantScope=1
 CurrentConfigurationName=
-TargetPrinter=Microsoft Print to PDF
+TargetPrinter=EPSON079BCB (WF-3520 Series)
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
-OutputMedium1=BOM
+OutputMedium1=Gerbers
 OutputMedium1_Type=GeneratedFiles
-OutputMedium2=Schematic Prints
+OutputMedium2=Assembly Drawing
 OutputMedium2_Type=Publish
-OutputMedium3=Pick and Place
+OutputMedium3=Validation
 OutputMedium3_Type=GeneratedFiles
 OutputType1=Gerber
 OutputName1=Gerber Files
@@ -35,7 +35,7 @@ OutputCategory1=Fabrication
 OutputDocumentPath1=
 OutputVariantName1=
 OutputEnabled1=0
-OutputEnabled1_OutputMedium1=0
+OutputEnabled1_OutputMedium1=1
 OutputEnabled1_OutputMedium2=0
 OutputEnabled1_OutputMedium3=0
 OutputDefault1=0
@@ -47,7 +47,7 @@ OutputCategory2=Fabrication
 OutputDocumentPath2=
 OutputVariantName2=
 OutputEnabled2=0
-OutputEnabled2_OutputMedium1=0
+OutputEnabled2_OutputMedium1=2
 OutputEnabled2_OutputMedium2=0
 OutputEnabled2_OutputMedium3=0
 OutputDefault2=0
@@ -58,8 +58,8 @@ OutputName3=Bill of Materials
 OutputCategory3=Report
 OutputDocumentPath3=
 OutputVariantName3=
-OutputEnabled3=1
-OutputEnabled3_OutputMedium1=1
+OutputEnabled3=0
+OutputEnabled3_OutputMedium1=0
 OutputEnabled3_OutputMedium2=0
 OutputEnabled3_OutputMedium3=0
 OutputDefault3=0
@@ -67,15 +67,15 @@ PageOptions3=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintS
 Configuration3_Name1=ColumnNameFormat
 Configuration3_Item1=CaptionAsName
 Configuration3_Name2=General
-Configuration3_Item2=OpenExported=False|AddToProject=False|ReportBOMViolationsInMessages=False|ForceFit=False|NotFitted=False|Database=False|DatabasePriority=False|IncludePcbData=False|IncludeVaultData=False|IncludeCloudData=False|IncludeDocumentData=True|IncludeAlternatives=False|ShowExportOptions=True|TemplateFilename=|TemplateVaultGuid=|TemplateItemGuid=|TemplateRevisionGuid=|BatchMode=0|FormWidth=1200|FormHeight=710|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=USD|SolutionsPerItem=1|SuppliersPerSolution=1|ViewType=1|UseDirectApi=False|BomSetName=
+Configuration3_Item2=OpenExported=False|AddToProject=False|ReportBOMViolationsInMessages=False|ForceFit=False|NotFitted=False|Database=False|DatabasePriority=False|IncludePcbData=False|IncludeVaultData=False|IncludeCloudData=False|IncludeDocumentData=True|IncludeAlternatives=False|ShowExportOptions=True|TemplateFilename=|TemplateVaultGuid=|TemplateItemGuid=|TemplateRevisionGuid=|BatchMode=5|FormWidth=1200|FormHeight=710|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=USD|SolutionsPerItem=1|SuppliersPerSolution=1|ViewType=0|UseDirectApi=False|BomSetName=
 Configuration3_Name3=GroupOrder
 Configuration3_Item3=PartNumber=True
 Configuration3_Name4=SortOrder
 Configuration3_Item4=Designator=Up
 Configuration3_Name5=VisibleOrder
-Configuration3_Item5=Description=120|Designator=120|Footprint=100|PartNumber=100
+Configuration3_Item5=PartNumber=100|Designator=120|Quantity=120|Description=120
 Configuration3_Name6=VisibleOrder_Flat
-Configuration3_Item6=Description=120|Designator=120|Footprint=100|PartNumber=100
+Configuration3_Item6=PartNumber=100|Designator=120|Quantity=120|Description=120
 OutputType4=Assembly
 OutputName4=Assembly Drawings
 OutputCategory4=Assembly
@@ -83,7 +83,7 @@ OutputDocumentPath4=
 OutputVariantName4=
 OutputEnabled4=0
 OutputEnabled4_OutputMedium1=0
-OutputEnabled4_OutputMedium2=0
+OutputEnabled4_OutputMedium2=1
 OutputEnabled4_OutputMedium3=0
 OutputDefault4=0
 PageOptions4=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=0|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=Letter|PaperIndex=1
@@ -119,10 +119,10 @@ OutputName5=Design Rules Check
 OutputCategory5=Validation
 OutputDocumentPath5=
 OutputVariantName5=
-OutputEnabled5=0
+OutputEnabled5=1
 OutputEnabled5_OutputMedium1=0
 OutputEnabled5_OutputMedium2=0
-OutputEnabled5_OutputMedium3=0
+OutputEnabled5_OutputMedium3=1
 OutputDefault5=0
 PageOptions5=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=0|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=1|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=Letter|PaperIndex=1
 Configuration5_Name1=OutputConfigurationParameter1
@@ -132,10 +132,10 @@ OutputName6=Differences Report
 OutputCategory6=Validation
 OutputDocumentPath6=
 OutputVariantName6=
-OutputEnabled6=0
+OutputEnabled6=1
 OutputEnabled6_OutputMedium1=0
 OutputEnabled6_OutputMedium2=0
-OutputEnabled6_OutputMedium3=0
+OutputEnabled6_OutputMedium3=2
 OutputDefault6=0
 PageOptions6=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=0|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=1|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=Letter|PaperIndex=1
 Configuration6_Name1=OutputConfigurationParameter1
@@ -147,49 +147,37 @@ OutputDocumentPath7=[Project Physical Documents]
 OutputVariantName7=
 OutputEnabled7=0
 OutputEnabled7_OutputMedium1=0
-OutputEnabled7_OutputMedium2=1
+OutputEnabled7_OutputMedium2=0
 OutputEnabled7_OutputMedium3=0
 OutputDefault7=0
 PageOptions7=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=0|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=Letter|PaperIndex=1
 Configuration7_Name1=OutputConfigurationParameter1
 Configuration7_Item1=Record=SchPrintView|ShowNoERC=True|ShowParamSet=True|ShowProbe=True|ShowBlanket=True|NoERCSymbolsToShow="Thin Cross","Thick Cross","Small Cross",Checkbox,Triangle|ShowNote=True|ShowNoteCollapsed=True|ShowOpenEnds=True|ExpandDesignator=True|ExpandNetLabel=False|ExpandPort=False|ExpandSheetNum=False|ExpandDocNum=False|PrintArea=0|PrintAreaRect.X1=0|PrintAreaRect.Y1=0|PrintAreaRect.X2=0|PrintAreaRect.Y2=0|DocumentPath=[Project Physical Documents]
-OutputType8=Pick Place
-OutputName8=Generates pick and place files
-OutputCategory8=Assembly
-OutputDocumentPath8=
-OutputVariantName8=
-OutputEnabled8=0
-OutputEnabled8_OutputMedium1=0
-OutputEnabled8_OutputMedium2=0
-OutputEnabled8_OutputMedium3=1
-OutputDefault8=0
-Configuration8_Name1=OutputConfigurationParameter1
-Configuration8_Item1=Record=PickPlaceView|Units=Metric|GenerateCSVFormat=True|GenerateTextFormat=False|ShowUnits=True|Separator=.|ExcludeFilterParam=True|IncludeVariations=False|IncludeStandardNoBOM=False|Filter= |FilterActive=False|YFlip=False|DifferentFootprints=False|Column#1=Name:Designator,Fixed:True,Metric:False,Visible:True,Sort:None,Position:0|Column#2=Name:Comment,Fixed:True,Metric:False,Visible:True,Sort:None,Position:1|Column#3=Name:Layer,Fixed:True,Metric:False,Visible:True,Sort:None,Position:2|Column#4=Name:Footprint,Fixed:True,Metric:False,Visible:True,Sort:None,Position:3|Column#5=Name:Footprint Description,Fixed:True,Metric:False,Visible:False,Sort:None,Position:4|Column#6=Name:Center-X,Fixed:True,Metric:True,Visible:True,Sort:None,Position:5|Column#7=Name:Center-Y,Fixed:True,Metric:True,Visible:True,Sort:None,Position:6|Column#8=Name:Rotation,Fixed:True,Metric:False,Visible:True,Sort:None,Position:7|Column#9=Name:Description,Fixed:True,Metric:False,Visible:True,Sort:None,Position:8|Column#10=Name:ComponentKind,Fixed:True,Metric:False,Visible:False,Sort:None,Position:9|Column#11=Name:Height,Fixed:True,Metric:True,Visible:False,Sort:None,Position:10|Column#12=Name:Ref-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:11|Column#13=Name:Ref-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:12|Column#14=Name:Pad-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:13|Column#15=Name:Pad-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:14|Column#16=Name:Variation,Fixed:True,Metric:False,Visible:False,Sort:None,Position:15|Column#17=Name:Package / Case,Fixed:False,Metric:False,Visible:False,Sort:None,Position:31,Type:0|Column#18=Name:Manufacturer Part Number,Fixed:False,Metric:False,Visible:False,Sort:None,Position:27,Type:0|Column#19=Name:Supplier Part Number 1,Fixed:False,Metric:False,Visible:False,Sort:None,Position:41,Type:0|Column#20=Name:Height - Seated (Max),Fixed:False,Metric:False,Visible:False,Sort:None,Position:22,Type:0|Column#21=Name:Number of Terminations,Fixed:False,Metric:False,Visible:False,Sort:None,Position:29,Type:0|Column#22=Name:Manufacturer,Fixed:False,Metric:False,Visible:False,Sort:None,Position:26,Type:0|Column#23=Name:Supplier Device Package,Fixed:False,Metric:False,Visible:False,Sort:None,Position:40,Type:0|Column#24=Name:Supplier 2,Fixed:False,Metric:False,Visible:False,Sort:None,Position:39,Type:0|Column#25=Name:HelpURL,Fixed:False,Metric:False,Visible:False,Sort:None,Position:23,Type:0|Column#26=Name:Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:45,Type:0|Column#27=Name:PartNumber,Fixed:False,Metric:False,Visible:False,Sort:None,Position:32,Type:0|Column#28=Name:Composition,Fixed:False,Metric:False,Visible:False,Sort:None,Position:18,Type:0|Column#29=Name:Power (Watts),Fixed:False,Metric:False,Visible:False,Sort:None,Position:33,Type:0|Column#30=Name:Ratings,Fixed:False,Metric:False,Visible:False,Sort:None,Position:34,Type:0|Column#31=Name:Applications,Fixed:False,Metric:False,Visible:False,Sort:None,Position:16,Type:0|Column#32=Name:Datasheets,Fixed:False,Metric:False,Visible:False,Sort:None,Position:19,Type:0|Column#33=Name:Temperature Coefficient,Fixed:False,Metric:False,Visible:False,Sort:None,Position:42,Type:0|Column#34=Name:Thickness (Max),Fixed:False,Metric:False,Visible:False,Sort:None,Position:43,Type:0|Column#35=Name:Capacitance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:17,Type:0|Column#36=Name:Lead Spacing,Fixed:False,Metric:False,Visible:False,Sort:None,Position:24,Type:0|Column#37=Name:Resistance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:35,Type:0|Column#38=Name:Series,Fixed:False,Metric:False,Visible:False,Sort:None,Position:36,Type:0|Column#39=Name:Size / Dimension,Fixed:False,Metric:False,Visible:False,Sort:None,Position:37,Type:0|Column#40=Name:Features,Fixed:False,Metric:False,Visible:False,Sort:None,Position:20,Type:0|Column#41=Name:Mounting Type,Fixed:False,Metric:False,Visible:False,Sort:None,Position:28,Type:0|Column#42=Name:Height,Fixed:False,Metric:False,Visible:False,Sort:None,Position:21,Type:0|Column#43=Name:Supplier 1,Fixed:False,Metric:False,Visible:False,Sort:None,Position:38,Type:0|Column#44=Name:Tolerance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:44,Type:0|Column#45=Name:Operating Temperature,Fixed:False,Metric:False,Visible:False,Sort:None,Position:30,Type:0|Column#46=Name:Lead Style,Fixed:False,Metric:False,Visible:False,Sort:None,Position:25,Type:0|DocumentPath=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\LED_PCB.PcbDoc
 
 [PublishSettings]
-OutputFilePath1=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-B\
+OutputFilePath1=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-A\
 ReleaseManaged1=1
 OutputBasePath1=Project Outputs for LED_PCB
-OutputPathMedia1==Codename+'-Rev-'+BOMRev
-OutputPathMediaValue1==Codename+'-Rev-'+BOMRev
-OutputPathOutputer1=[Output Type]
+OutputPathMedia1==Codename+'-Rev-'+HardRev
+OutputPathMediaValue1==Codename+'-Rev-'+HardRev
+OutputPathOutputer1=[Output Custom]
 OutputPathOutputerPrefix1=
-OutputPathOutputerValue1=
+OutputPathOutputerValue1=Gerbers
 OutputFileName1=
-OutputFileNameMulti1==Codename+'-'+BOMRev+'-'+OutputName
+OutputFileNameMulti1== Codename+'-'+HardRev+'-'+OutputName
 UseOutputNameForMulti1=0
 OutputFileNameSpecial1=
 OpenOutput1=0
-OutputFilePath2=Project Outputs for Free Documents\Codename-Rev-MinorRevision\
+OutputFilePath2=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-A\
 ReleaseManaged2=1
 OutputBasePath2=Project Outputs for LED_PCB
-OutputPathMedia2==Codename+'-Rev-'+BOMRev
-OutputPathMediaValue2==Codename+'-Rev-'+BOMRev
+OutputPathMedia2==Codename+'-Rev-'+HardRev
+OutputPathMediaValue2==Codename+'-Rev-'+HardRev
 OutputPathOutputer2=[Output Type]
 OutputPathOutputerPrefix2=
 OutputPathOutputerValue2=
 OutputFileName2=2layer_OSHpark.PDF
-OutputFileNameMulti2== Codename+'-'+BOMRev+'-'+OutputName
+OutputFileNameMulti2== Codename+'-'+HardRev+'-'+OutputName
 UseOutputNameForMulti2=0
 OutputFileNameSpecial2=
 OpenOutput2=0
@@ -207,22 +195,22 @@ ShowComponentParameters2=0
 GlobalBookmarks2=0
 PDFACompliance2=Disabled
 PDFVersion2=Default
-OutputFilePath3=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-B\
+OutputFilePath3=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-MinorRevision\
 ReleaseManaged3=1
 OutputBasePath3=Project Outputs for LED_PCB
-OutputPathMedia3==Codename+'-Rev-'+BOMRev
-OutputPathMediaValue3==Codename+'-Rev-'+BOMRev
-OutputPathOutputer3=[Output Type]
+OutputPathMedia3==Codename+'-Rev-'+HardRev
+OutputPathMediaValue3==Codename+'-Rev-'+HardRev
+OutputPathOutputer3=[Output Custom]
 OutputPathOutputerPrefix3=
-OutputPathOutputerValue3=
+OutputPathOutputerValue3=Validation
 OutputFileName3=
-OutputFileNameMulti3==Codename+'-'+BOMRev+'-'+OutputName
+OutputFileNameMulti3== Codename+'-'+HardRev+'-'+OutputName
 UseOutputNameForMulti3=0
 OutputFileNameSpecial3=
 OpenOutput3=0
 
 [GeneratedFilesSettings]
-RelativeOutputPath1=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-B\
+RelativeOutputPath1=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-A\
 OpenOutputs1=0
 AddToProject1=0
 TimestampFolder1=0
@@ -232,9 +220,9 @@ OpenGerberOutput1=0
 OpenNCDrillOutput1=0
 OpenIPCOutput1=0
 EnableReload1=0
-RelativeOutputPath2=Project Outputs for Free Documents\Codename-Rev-MinorRevision\
+RelativeOutputPath2=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-A\
 OpenOutputs2=0
-RelativeOutputPath3=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-B\
+RelativeOutputPath3=C:\Users\jeffr\Desktop\LED_CUBE\LED_PCB\Project Outputs for LED_PCB\LED_CUBE-LED_BOARD-Rev-MinorRevision\
 OpenOutputs3=0
 AddToProject3=0
 TimestampFolder3=0

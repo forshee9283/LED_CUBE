@@ -44,30 +44,12 @@ CrossRefPorts=3
 CrossRefCrossSheets=1
 CrossRefSheetEntries=0
 CrossRefFollowFromMainSettings=1
-CurrentVariant=Recommended Build
 
 [Preferences]
 PrefsVaultGUID=
 PrefsRevisionGUID=
 
 [Document1]
-DocumentPath=2layer_Sophistry_PCB.OutJob
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=0
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=
-
-[Document2]
 DocumentPath=2layer_Sophistry_Assembly.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -84,25 +66,8 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document3]
-DocumentPath=Host.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=0
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=0
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=VEFVIWIL
-
-[Document4]
-DocumentPath=Host.PcbDoc
+[Document2]
+DocumentPath=2layer_Sophistry_PCB.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -116,14 +81,57 @@ ClassGenCCAutoRoomEnabled=0
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=PVAMEXXR
+DocumentUniqueId=
+
+[Document3]
+DocumentPath=LED_PCB_LONG.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=VEFVIWIL
+
+[Document4]
+DocumentPath=LED_PCB_LONG.PcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=ZCWHGVAD
 
 [ProjectVariant1]
-UniqueId=DC56ED8F-99E9-4D7B-BFFA-588F178F3BDA
+UniqueId=338C9A31-5533-4756-94AB-E60608901428
 Description=Recommended Build
 AllowFabrication=0
 ParameterCount=0
-VariationCount=0
+VariationCount=9
+Variation1=Designator=R3|UniqueId=\MCQBAGIM|Kind=1|AlternatePart=
+Variation2=Designator=R4|UniqueId=\DXZFWUGZ|Kind=1|AlternatePart=
+Variation3=Designator=C10|UniqueId=\XFTXUWNQ|Kind=1|AlternatePart=
+Variation4=Designator=U10|UniqueId=\JABOPZWQ|Kind=1|AlternatePart=
+Variation5=Designator=R6|UniqueId=\QQTUKALU|Kind=1|AlternatePart=
+Variation6=Designator=R5|UniqueId=\ZHHJDIQX|Kind=1|AlternatePart=
+Variation7=Designator=R7|UniqueId=\NWLSTHIZ|Kind=1|AlternatePart=
+Variation8=Designator=R1|UniqueId=\PEZIGWUU|Kind=1|AlternatePart=
+Variation9=Designator=R2|UniqueId=\YDPUDKJQ|Kind=1|AlternatePart=
 ParamVariationCount=0
 
 [Parameter1]
@@ -132,15 +140,15 @@ Value=JCF
 
 [Parameter2]
 Name=HardRev
-Value=C
+Value=A
 
 [Parameter3]
 Name=Codename
-Value=LED_CUBE-Host
+Value=LED_CUBE-LED_BOARD_LONG
 
 [Parameter4]
 Name=BOMRev
-Value=C
+Value=A
 
 [Configuration1]
 Name=Sources
@@ -511,6 +519,11 @@ OutputName9=Report Single Pin Nets
 OutputDocumentPath9=
 OutputVariantName9=[No Variations]
 OutputDefault9=0
+OutputType10=BOM_ReportManufacturing
+OutputName10=Manufacturing Data
+OutputDocumentPath10=
+OutputVariantName10=[No Variations]
+OutputDefault10=0
 
 [OutputGroup7]
 Name=Other Outputs
@@ -633,6 +646,36 @@ OutputName12=Web Review Data
 OutputDocumentPath12=
 OutputVariantName12=
 OutputDefault12=0
+OutputType13=Ansoft Neutral
+OutputName13=Ansoft Neutral (AutoPCB)
+OutputDocumentPath13=
+OutputVariantName13=
+OutputDefault13=0
+OutputType14=HyperLynx
+OutputName14=HyperLynx (AutoPCB)
+OutputDocumentPath14=
+OutputVariantName14=
+OutputDefault14=0
+OutputType15=MathWorks
+OutputName15=MathWorks (AutoPCB)
+OutputDocumentPath15=
+OutputVariantName15=
+OutputDefault15=0
+OutputType16=Orcad v7 Capture Design
+OutputName16=Orcad v7 Capture Design (AutoSCH)
+OutputDocumentPath16=
+OutputVariantName16=
+OutputDefault16=0
+OutputType17=P-CAD ASCII
+OutputName17=P-CAD ASCII (AutoPCB)
+OutputDocumentPath17=
+OutputVariantName17=
+OutputDefault17=0
+OutputType18=P-CAD V16 Schematic Design
+OutputName18=P-CAD V16 Schematic Design (AutoSCH)
+OutputDocumentPath18=
+OutputVariantName18=
+OutputDefault18=0
 
 [OutputGroup10]
 Name=PostProcess Outputs
@@ -797,6 +840,16 @@ Type148=1
 Type149=1
 Type150=1
 Type151=1
+Type152=1
+Type153=1
+Type154=1
+Type155=1
+Type156=1
+Type157=1
+Type158=1
+Type159=1
+Type160=1
+Type161=1
 
 [Difference Levels]
 Type1=1
@@ -881,6 +934,12 @@ Type79=1
 Type80=1
 Type81=1
 Type82=1
+Type83=1
+Type84=1
+Type85=1
+Type86=1
+Type87=1
+Type88=1
 
 [Electrical Rules Check]
 Type1=1
@@ -1044,6 +1103,10 @@ Type158=0
 Type159=0
 Type160=0
 Type161=0
+Type162=1
+Type163=1
+Type164=1
+Type165=2
 
 [ERC Connection Matrix]
 L1=NNNNNNNNNNNWNNNWW
